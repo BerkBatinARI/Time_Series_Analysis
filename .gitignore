@@ -9,8 +9,10 @@ __pycache__/
 .env
 
 # outputs
-reports/*.png
-reports/*.pdf
+reports/*
+!reports/.gitkeep
+!reports/figures/
+!reports/figures/*
 
 # mac
 .DS_Store

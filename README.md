@@ -23,3 +23,6 @@ Interpretation: assuming Normal returns is too optimistic for equity tails; fat-
 - Kupiec unconditional coverage test (df=1):  
   - EWMA + Normal: **LR = 70.80** (rejects correct 99% coverage)  
   - EWMA + Student-t: **LR = 25.48** (still rejects, but closer)
+
+  ### VaR backtest (EWMA, 99%)
+![SPY VaR backtest](reports/figures/SPY_var99_backtest.png)
