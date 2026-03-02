@@ -19,3 +19,7 @@ Interpretation: assuming Normal returns is too optimistic for equity tails; fat-
 - [ ] Implement **GARCH(1,1)** volatility forecasts
 - [ ] Compare EWMA vs GARCH across calm vs stressed regimes
 - [ ] Wrap everything into a single `run_all.py` pipeline for reproducibility
+
+- Kupiec unconditional coverage test (df=1):  
+  - EWMA + Normal: **LR = 70.80** (rejects correct 99% coverage)  
+  - EWMA + Student-t: **LR = 25.48** (still rejects, but closer)
