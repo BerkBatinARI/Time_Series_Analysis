@@ -35,9 +35,24 @@ Markers indicate VaR exceptions (days where realised loss exceeds the predicted 
 
 ## Reproducibility
 
-Create and activate the virtual environment:
+The commands below are **examples** of how to run the pipeline (you do **not** need to run them unless you want to regenerate outputs).
 
 ```bash
+# Environment setup
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+# Fast pipeline (recommended)
+python src/download_data.py
+python src/make_features.py
+python src/risk_ewma.py
+python src/risk_t_var_es.py
+python src/backtest_var.py
+python src/backtest_var_t.py
+python src/kupiec_test.py
+
+# GARCH walk-forward VaR (slow; expanding-window refit)
+python src/risk_garch.py
+python src/backtest_var_garch.py
+```
