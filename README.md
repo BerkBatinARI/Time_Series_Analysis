@@ -58,7 +58,17 @@ Markers indicate VaR exceptions (days where realised loss exceeds the predicted 
 
 ![SPY GARCH VaR(99%) Backtest](reports/figures/SPY_var99_garch_backtest.png)
 
+### Christoffersen conditional coverage (independence + coverage)
 
+This checks both:
+- **coverage** (are breaches ~1% at 99% VaR?)
+- **independence** (are breaches clustered or roughly independent over time?)
+
+Results (LR statistics; lower is better):
+
+- **EWMA + Normal**: LR_uc **70.80**, LR_ind **4.36**, **LR_cc 75.16**
+- **EWMA + Student-t (df=6)**: LR_uc **25.48**, LR_ind **4.66**, **LR_cc 30.15**
+- **GARCH(1,1) + Normal**: LR_uc **60.39**, LR_ind **0.73**, **LR_cc 61.12**
 
 ## Reproducibility
 
