@@ -69,7 +69,13 @@ Results (LR statistics; lower is better):
 - **EWMA + Student-t (df=6)**: `LR_uc` **25.48**, `LR_ind` **4.66**, `LR_cc` **30.15**
 - **GARCH(1,1) + Normal**: `LR_uc` **60.39**, `LR_ind` **0.73**, `LR_cc` **61.12**
 
-Full summary table: `reports/tables/SPY_christoffersen_summary.csv`
+| Model | Obs | Breaches | Breach rate | `LR_uc` | `LR_ind` | `LR_cc` |
+|---|---:|---:|---:|---:|---:|---:|
+| EWMA + Normal | 5263 | 124 | 2.356% | 70.80 | 4.36 | 75.16 |
+| EWMA + Student-t (df=6) | 5263 | 93 | 1.767% | 25.48 | 4.66 | 30.15 |
+| GARCH(1,1) + Normal | 4822 | 111 | 2.302% | 60.39 | 0.73 | 61.12 |
+
+Full summary table: [`reports/tables/SPY_christoffersen_summary.csv`](reports/tables/SPY_christoffersen_summary.csv)
 
 ## Reproducibility
 
