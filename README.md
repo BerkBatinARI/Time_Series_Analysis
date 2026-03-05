@@ -69,6 +69,8 @@ Results (LR statistics; lower is better):
 - **EWMA + Student-t (df=6)**: `LR_uc` **25.48**, `LR_ind` **4.66**, `LR_cc` **30.15**
 - **GARCH(1,1) + Normal**: `LR_uc` **60.39**, `LR_ind` **0.73**, `LR_cc` **61.12**
 
+Full summary table: `reports/tables/SPY_christoffersen_summary.csv`
+
 ## Reproducibility
 
 The commands below are **examples** of how to run the pipeline (you do **not** need to run them unless you want to regenerate outputs).
