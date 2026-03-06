@@ -68,6 +68,7 @@ Results (LR statistics; lower is better):
 
 - **EWMA + Normal**: `LR_uc` **70.80**, `LR_ind` **4.36**, `LR_cc` **75.16**
 - **EWMA + Student-t (df=6)**: `LR_uc` **25.48**, `LR_ind` **4.66**, `LR_cc` **30.15**
+    Kupiec p-values (Chi-square, df=1): see [`reports/tables/SPY_kupiec_summary_with_pvalues.csv`](reports/tables/SPY_kupiec_summary_with_pvalues.csv)
 - **GARCH(1,1) + Normal**: `LR_uc` **60.39**, `LR_ind` **0.73**, `LR_cc` **61.12**
 
 **P-values (Chi-square approximation):**
