@@ -37,22 +37,22 @@ The focus is not to “find one perfect model”, but to compare sensible baseli
 
 | Model | Obs | Breach rate | Expected | Kupiec `LR_uc` | Christoffersen `LR_cc` |
 |---|---:|---:|---:|---:|---:|
-| EWMA + Normal | 5263 | 2.356% | 1.000% | 70.80 | 75.16 |
-| EWMA + Student-t (df=6) | 5263 | 1.767% | 1.000% | 25.48 | 30.15 |
-| GARCH(1,1) + Normal | 4822 | 2.302% | 1.000% | 60.39 | 61.12 |
+| EWMA + Normal | 5272 | 2.352% | 1.000% | 70.53 | 74.93 |
+| EWMA + Student-t (df=6) | 5272 | 1.764% | 1.000% | 25.33 | 30.02 |
+| GARCH(1,1) + Normal | 4831 | 2.298% | 1.000% | 60.15 | 60.89 |
 
-- **EWMA + Normal VaR** breaches: **2.36%** (expected ~1.00%) → underestimates tail risk.
-- **EWMA + Student-t (df=6) VaR** breaches: **1.77%** → improved, still higher than expected.
+- **EWMA + Normal VaR** breaches: **2.35%** (expected ~1.00%) → underestimates tail risk.
+- **EWMA + Student-t (df=6) VaR** breaches: **1.76%** → improved, still higher than expected.
 - Kupiec unconditional coverage test (df=1):  
-  - EWMA + Normal: **LR = 70.80** (rejects correct 99% coverage)  
-  - EWMA + Student-t: **LR = 25.48** (still rejects, but closer)
+  - EWMA + Normal: **LR = 70.53** (rejects correct 99% coverage)  
+  - EWMA + Student-t: **LR = 25.33** (still rejects, but closer)
 
 Kupiec p-values (Chi-square, df=1): see [`reports/tables/SPY_kupiec_summary_with_pvalues.csv`](reports/tables/SPY_kupiec_summary_with_pvalues.csv)
 
 ### Key takeaways
 
-- EWMA + Normal VaR materially underestimates tail risk (breach rate ~2.36% vs expected 1%).
-- Switching to a Student-t distribution improves coverage (breach rate ~1.77%), but still fails strict 99% tests.
+- EWMA + Normal VaR materially underestimates tail risk (breach rate ~2.35% vs expected 1%).
+- Switching to a Student-t distribution improves coverage (breach rate ~1.76%), but still fails strict 99% tests.
 - GARCH improves volatility dynamics, but the Normal tail assumption still leads to elevated breaches.
 
 ### Diagnostics plots
@@ -71,9 +71,9 @@ Markers indicate VaR exceptions (days where realised loss exceeds the predicted 
 
 ### GARCH(1,1) VaR (99%) — Walk-forward backtest
 
-- Obs used: 4,821
+- Obs used: 4,831
 - Breaches: 111
-- Breach rate: 2.3024%
+- Breach rate: 2.2977%
 
 ![SPY GARCH VaR(99%) Backtest](reports/figures/SPY_var99_garch_backtest.png)
 
@@ -86,9 +86,9 @@ This checks both:
 
 Results (LR statistics; lower is better):
 
-- **EWMA + Normal**: `LR_uc` **70.80**, `LR_ind` **4.36**, `LR_cc` **75.16**
-- **EWMA + Student-t (df=6)**: `LR_uc` **25.48**, `LR_ind` **4.66**, `LR_cc` **30.15**
-- **GARCH(1,1) + Normal**: `LR_uc` **60.39**, `LR_ind` **0.73**, `LR_cc` **61.12**
+- **EWMA + Normal**: `LR_uc` **70.56**, `LR_ind` **4.37**, `LR_cc` **74.93**
+- **EWMA + Student-t (df=6)**: `LR_uc` **25.34**, `LR_ind` **4.68**, `LR_cc` **30.02**
+- **GARCH(1,1) + Normal**: `LR_uc` **60.15**, `LR_ind` **0.74**, `LR_cc` **60.89**
 
 **P-values (Chi-square approximation):**
 
@@ -100,9 +100,9 @@ Interpretation (rule of thumb): if **p < 0.05**, reject the model’s 99% VaR co
 
 | Model | Obs | Breaches | Breach rate | `LR_uc` | `p_uc` | `LR_ind` | `p_ind` | `LR_cc` | `p_cc` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| EWMA + Normal | 5263 | 124 | 2.356% | 70.80 | ~0.000 | 4.36 | ~0.037 | 75.16 | ~0.000 |
-| EWMA + Student-t (df=6) | 5263 | 93 | 1.767% | 25.48 | ~0.000 | 4.66 | ~0.031 | 30.15 | ~0.000 |
-| GARCH(1,1) + Normal | 4822 | 111 | 2.302% | 60.39 | ~0.000 | 0.73 | ~0.392 | 61.12 | ~0.000 |
+| EWMA + Normal | 5272 | 124 | 2.352% | 70.56 | ~0.000 | 4.37 | ~0.037 | 74.93 | ~0.000 |
+| EWMA + Student-t (df=6) | 5272 | 93 | 1.764% | 25.34 | ~0.000 | 4.68 | ~0.031 | 30.02 | ~0.000 |
+| GARCH(1,1) + Normal | 4831 | 111 | 2.298% | 60.15 | ~0.000 | 0.74 | ~0.390 | 60.89 | ~0.000 |
 
 Full summary table: [`reports/tables/SPY_christoffersen_summary_with_pvalues.csv`](reports/tables/SPY_christoffersen_summary_with_pvalues.csv)
 
