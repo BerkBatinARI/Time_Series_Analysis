@@ -7,12 +7,12 @@ This repo is a small risk engine that turns a volatility forecast into 1-day **V
 
 The goal is not “one perfect model”, but a clean comparison of sensible baselines (EWMA, GARCH, different return distributions) with transparent evaluation.
 
-
 ## Project structure
 
 - `src/` — scripts (data download, feature engineering, risk models, backtests)
 - `data/` — raw and processed datasets (generated locally)
 - `reports/figures/` — key tracked outputs (plots embedded in this README)
+- `reports/tables/` — tracked summary tables (CSV)
 - `notebooks/` — exploration / scratch work
 
 ## What this project does
@@ -27,9 +27,9 @@ Given historical prices, it:
 - evaluates the quality of VaR forecasts using:
   - simple breach-rate backtesting (expected ≈ 1% at 99% VaR)
   - Kupiec unconditional coverage test (LR statistic)
+  - Christoffersen conditional coverage (coverage + independence)
 
 The focus is not to “find one perfect model”, but to compare sensible baselines transparently, with tracked figures and clear diagnostics.
-
 
 ## Results so far (SPY, 1-day 99% VaR)
 
@@ -47,14 +47,20 @@ The focus is not to “find one perfect model”, but to compare sensible baseli
   - EWMA + Normal: **LR = 70.80** (rejects correct 99% coverage)  
   - EWMA + Student-t: **LR = 25.48** (still rejects, but closer)
 
+Kupiec p-values (Chi-square, df=1): see [`reports/tables/SPY_kupiec_summary_with_pvalues.csv`](reports/tables/SPY_kupiec_summary_with_pvalues.csv)
+
 ### Diagnostics plots
+
 The plots below show the EWMA Normal-VaR threshold against realised 1-day losses, and highlight when the model is breached (loss exceeds VaR).
 
 #### VaR backtest (EWMA, 99%)
+
 ![SPY VaR backtest](reports/figures/SPY_var99_backtest.png)
 
 #### Breach timeline (EWMA, 99%)
+
 Markers indicate VaR exceptions (days where realised loss exceeds the predicted 99% VaR threshold).
+
 ![SPY VaR breaches](reports/figures/SPY_var99_breaches.png)
 
 ### GARCH(1,1) VaR (99%) — Walk-forward backtest
@@ -63,12 +69,12 @@ Markers indicate VaR exceptions (days where realised loss exceeds the predicted 
 - Breaches: 111
 - Breach rate: 2.3024%
 
-
 ![SPY GARCH VaR(99%) Backtest](reports/figures/SPY_var99_garch_backtest.png)
 
 ### Christoffersen conditional coverage (independence + coverage)
 
 This checks both:
+
 - **coverage** (are breaches ~1% at 99% VaR?)
 - **independence** (are breaches clustered or roughly independent over time?)
 
@@ -76,10 +82,10 @@ Results (LR statistics; lower is better):
 
 - **EWMA + Normal**: `LR_uc` **70.80**, `LR_ind` **4.36**, `LR_cc` **75.16**
 - **EWMA + Student-t (df=6)**: `LR_uc` **25.48**, `LR_ind` **4.66**, `LR_cc` **30.15**
-    Kupiec p-values (Chi-square, df=1): see [`reports/tables/SPY_kupiec_summary_with_pvalues.csv`](reports/tables/SPY_kupiec_summary_with_pvalues.csv)
 - **GARCH(1,1) + Normal**: `LR_uc` **60.39**, `LR_ind` **0.73**, `LR_cc` **61.12**
 
 **P-values (Chi-square approximation):**
+
 - Kupiec `LR_uc` uses **df = 1**
 - Christoffersen `LR_ind` uses **df = 1**
 - Christoffersen `LR_cc` uses **df = 2**
@@ -116,16 +122,3 @@ python src/kupiec_test.py
 # GARCH walk-forward VaR (slow; expanding-window refit)
 python src/risk_garch.py
 python src/backtest_var_garch.py
-```
-
-## Limitations
-
-- Results depend on the historical sample and do not account for regime shifts or structural breaks.
-- Tests here focus on VaR coverage and (for Christoffersen) independence; ES backtesting is not included.
-- The GARCH implementation is a transparent walk-forward refit and is not optimised for speed.
-
-## Next steps
-
-- Add ES backtesting alongside VaR tests.
-- Surface p-values directly in the main model comparison table.
-- Speed up GARCH by refitting on a schedule (weekly/monthly) and compare accuracy vs runtime.
