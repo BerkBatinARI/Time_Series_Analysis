@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from plot_style import apply_finance_style, format_time_axis, add_subtitle
+
 TICKER = "SPY"
 ALPHA = 0.99  # 99% VaR
 
@@ -10,14 +12,12 @@ ALPHA = 0.99  # 99% VaR
 def main() -> None:
     print("RUNNING backtest_var.py main()")
     os.makedirs("reports/figures", exist_ok=True)
+    apply_finance_style()
 
     path = f"data/{TICKER}_ewma_var_es.csv"
     df = pd.read_csv(path, parse_dates=["Date"]).sort_values("Date").reset_index(drop=True)
 
-    # Keep rows where we actually have a VaR estimate
     df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=["log_return", "var_99"]).copy()
-
-    # One-sided 99% VaR breach: return < -VaR
     df["breach"] = df["log_return"] < (-df["var_99"])
 
     n = int(len(df))
@@ -27,23 +27,25 @@ def main() -> None:
     print(f"Obs: {n}")
     print(f"VaR(99%) breaches: {breaches} ({breach_rate:.3%})  | expected ~{(1-ALPHA):.3%}")
 
-    # Plot: returns vs -VaR (threshold on same axis as returns)
-    plt.figure()
-    plt.plot(df["Date"], df["log_return"], label="log return")
-    plt.plot(df["Date"], -df["var_99"], label="-VaR(99%) EWMA")
+    fig, ax = plt.subplots()
 
-    breach_df = df[df["breach"]]
-    plt.scatter(breach_df["Date"], breach_df["log_return"], label="breaches", s=12)
+    ax.plot(df["Date"], df["log_return"], label="log return")
+    ax.plot(df["Date"], -df["var_99"], label="-VaR(99%) EWMA")
 
-    plt.title(f"{TICKER} EWMA VaR(99%) Backtest")
-    plt.xlabel("Date")
-    plt.ylabel("Log return")
-    plt.legend()
+    bdf = df[df["breach"]]
+    ax.scatter(bdf["Date"], bdf["log_return"], label="breaches", s=14, zorder=3)
+
+    ax.set_title(f"{TICKER} — EWMA VaR(99%) Backtest")
+    add_subtitle(ax, f"Obs={n:,} | breaches={breaches} | breach rate={breach_rate:.2%} (expected {(1-ALPHA):.2%})")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Log return")
+
+    format_time_axis(ax)
+    ax.legend(loc="upper left", frameon=False)
 
     fig_path = f"reports/figures/{TICKER}_var99_backtest.png"
-    plt.tight_layout()
-    plt.savefig(fig_path, dpi=200)
-    plt.close()
+    fig.savefig(fig_path)
+    plt.close(fig)
     print(f"Saved {fig_path}")
 
 
