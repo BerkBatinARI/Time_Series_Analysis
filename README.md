@@ -49,6 +49,12 @@ The focus is not to “find one perfect model”, but to compare sensible baseli
 
 Kupiec p-values (Chi-square, df=1): see [`reports/tables/SPY_kupiec_summary_with_pvalues.csv`](reports/tables/SPY_kupiec_summary_with_pvalues.csv)
 
+### Key takeaways
+
+- EWMA + Normal VaR materially underestimates tail risk (breach rate ~2.36% vs expected 1%).
+- Switching to a Student-t distribution improves coverage (breach rate ~1.77%), but still fails strict 99% tests.
+- GARCH improves volatility dynamics, but the Normal tail assumption still leads to elevated breaches.
+
 ### Diagnostics plots
 
 The plots below show the EWMA Normal-VaR threshold against realised 1-day losses, and highlight when the model is breached (loss exceeds VaR).
